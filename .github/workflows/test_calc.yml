@@ -2,6 +2,9 @@ name: Unit testing calc.py
 
 on: 
   workflow_dispatch:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   test_calc:
