@@ -1,0 +1,30 @@
+name: Unit testing calc.py
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  test_calc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v2
+      - name: Demo shell commands
+        run: |
+          echo "$ pwd"
+          pwd
+      - name: Install pytest
+        run: |
+          echo "$ pip install pytest"
+          pip install pytest
+          echo "$ pytest --version"
+          pytest --version
+      - name: Run calc test
+        run: |
+          echo "$ cd calc"
+          cd calc
+          echo "pytest"
+          pytest
+
+        
+    
