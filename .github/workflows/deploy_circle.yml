@@ -1,0 +1,50 @@
+name: Deploy circle to DO
+
+on:
+  workflow_dispatch:
+
+env:
+  # target
+  HOST: 157.230.185.96
+  USER: root
+
+  # global options
+  SSH_OPTIONS: -i ~/.ssh/id_rsa -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+
+jobs:
+  deploy_to_https_server:
+    runs-on: ubuntu-latest
+    steps:
+    # INSTALL SSH KEY
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.ID_RSA }}
+        name: id_rsa
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+    - name: Get cd-example
+      uses: actions/checkout@v2
+
+    - name: Check out remote server
+      run: |
+        export TARGET=$USER@$HOST
+        export RUN="ssh $SSH_OPTIONS $TARGET"
+        export COPY="scp $SSH_OPTIONS"
+        echo $RUN 'ls -la'
+    - name: deploy circle to remote server
+      run: |
+        export TARGET=$USER@$HOST
+        export RUN="ssh $SSH_OPTIONS $TARGET"
+        export COPY="scp $SSH_OPTIONS"
+        cd circle
+        ls -la
+        echo $COPY index.html $TARGET:/root/static
+        $COPY index.html $TARGET:/root/static
+        echo $COPY sketch.js $TARGET:/root/static
+        $COPY sketch.js $TARGET:/root/static
+        echo $COPY style.css $TARGET:/root/static
+        $COPY style.css $TARGET:/root/static
+        echo $RUN 'ls -la'
+        $RUN 'ls -la'
+
